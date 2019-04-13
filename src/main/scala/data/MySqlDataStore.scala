@@ -1,11 +1,10 @@
 package data
 
-import service.KeyValueStoreService
 import com.twitter.finagle.Mysql
-import com.twitter.finagle.mysql._
 import com.twitter.finagle.mysql.Parameter._
-import com.twitter.finagle.mysql.{Client, PreparedStatement, StringValue}
+import com.twitter.finagle.mysql.{Client, _}
 import com.twitter.util.Future
+import service.KeyValueStoreService
 
 /**
   * Created by cvu on 4/11/19.
