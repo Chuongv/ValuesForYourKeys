@@ -1,5 +1,6 @@
 package service.prompt
 
+import com.twitter.util.{Await, Future}
 import service.KeyValueStoreService
 
 import scala.annotation.tailrec
@@ -7,7 +8,7 @@ import scala.annotation.tailrec
 /**
   * Created by cvu on 4/10/19.
   */
-class CommandLineKeyValueStore(keyValueStoreService: KeyValueStoreService[String]) {
+class CommandLineKeyValueStore(keyValueStoreService: KeyValueStoreService[Future, Array[Byte]]) {
 
   def start(): Unit = {
 
@@ -54,10 +55,12 @@ class CommandLineKeyValueStore(keyValueStoreService: KeyValueStoreService[String
       println("Empty response given! Please try again!")
     } else {
       val value = keyValueStoreService.get(key)
-      value match {
-        case Some(v) => println("Value is " + v)
+      value map {
+        case Some(v) => println("Value is " + new String(v))
         case None    => println("Got a miss on the key value store!")
       }
+
+      Await.result(value)
     }
   }
 
@@ -66,7 +69,7 @@ class CommandLineKeyValueStore(keyValueStoreService: KeyValueStoreService[String
     val response = scala.io.StdIn.readLine().split('=').map(_.trim).filterNot(_.isEmpty)
 
     if (response.length == 2) {
-      keyValueStoreService.set(response.head, response(1))
+      Await.result(keyValueStoreService.set(response.head, response(1).getBytes))
     } else {
       println("Invalid response, please try again!")
     }

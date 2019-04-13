@@ -3,9 +3,9 @@ package service
 /**
   * Created by cvu on 4/10/19.
   */
-trait KeyValueStoreService[A] {
+trait KeyValueStoreService[F[_], A] {
 
-  def get(key: String): Option[A]
+  def get(key: String): F[Option[A]]
 
-  def set(key: String, value: A): Unit
+  def set(key: String, value: A): F[Unit]
 }

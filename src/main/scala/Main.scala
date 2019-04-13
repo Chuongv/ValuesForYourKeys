@@ -1,3 +1,4 @@
+import data.MySqlDataStore
 import service.KeyValueStoreService
 import service.prompt.CommandLineKeyValueStore
 
@@ -6,16 +7,9 @@ import service.prompt.CommandLineKeyValueStore
   */
 object Main extends App {
 
-  val inMemoryKeyValueStore = new KeyValueStoreService[String] {
+  val mysqlDataStore = new MySqlDataStore
 
-    val datastore = new scala.collection.mutable.HashMap[String, String]()
-
-    override def get(key: String): Option[String] = datastore.get(key)
-
-    override def set(key: String, value: String): Unit = datastore.update(key, value)
-  }
-
-  val prompter = new CommandLineKeyValueStore(inMemoryKeyValueStore)
+  val prompter = new CommandLineKeyValueStore(mysqlDataStore)
 
   prompter.start()
 
