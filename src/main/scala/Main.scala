@@ -1,5 +1,4 @@
 import data.MySqlDataStore
-import service.KeyValueStoreService
 import service.prompt.CommandLineKeyValueStore
 
 /**
