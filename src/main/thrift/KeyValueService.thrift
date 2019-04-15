@@ -3,9 +3,13 @@ enum NonValue {
    KEY_NOT_FOUND = 1;
 }
 
+struct BinaryData {
+  1: required binary data;
+}
+
 union Response {
  1: NonValue nonValue;
- 2: binary   data;
+ 2: BinaryData   binaryData;
 }
 
 

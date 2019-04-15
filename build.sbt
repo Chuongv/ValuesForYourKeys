@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion := "2.12.1"
 
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature")
+
 libraryDependencies += "com.twitter" %% "finagle-mysql" % "19.3.0"
 libraryDependencies ++= Seq(
   "org.apache.thrift" % "libthrift" % "0.10.0",
