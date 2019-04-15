@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.12.1"
 
-scalacOptions := Seq("-unchecked", "-deprecation", "-feature")
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature", "-language:higherKinds")
 
 libraryDependencies += "com.twitter" %% "finagle-mysql" % "19.3.0"
 libraryDependencies ++= Seq(

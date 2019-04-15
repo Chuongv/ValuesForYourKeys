@@ -4,12 +4,12 @@ import com.twitter.finagle.Mysql
 import com.twitter.finagle.mysql.Parameter._
 import com.twitter.finagle.mysql.{Client, _}
 import com.twitter.util.Future
-import service.KeyValueStoreService
+import service.KeyValueInterface
 
 /**
   * Created by cvu on 4/11/19.
   */
-class MySqlDataStore extends KeyValueStoreService[Future,Array[Byte]] {
+class MySqlDataStore extends KeyValueInterface[Future,Array[Byte]] {
 
   private val client: Client with Transactions = Mysql.client
     .withCredentials("root","root")

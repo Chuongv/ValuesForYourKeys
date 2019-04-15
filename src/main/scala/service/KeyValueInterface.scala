@@ -3,7 +3,7 @@ package service
 /**
   * Created by cvu on 4/10/19.
   */
-trait KeyValueStoreService[F[_], A] {
+trait KeyValueInterface[F[_], A] {
 
   def get(key: String): F[Option[A]]
 

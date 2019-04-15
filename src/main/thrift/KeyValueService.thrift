@@ -8,8 +8,8 @@ struct BinaryData {
 }
 
 union Response {
- 1: NonValue nonValue;
- 2: BinaryData   binaryData;
+ 1: NonValue nonFound;
+ 2: BinaryData   dataFound;
 }
 
 

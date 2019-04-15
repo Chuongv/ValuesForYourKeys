@@ -1,14 +1,14 @@
 package service.prompt
 
 import com.twitter.util.{Await, Future}
-import service.KeyValueStoreService
+import service.KeyValueInterface
 
 import scala.annotation.tailrec
 
 /**
   * Created by cvu on 4/10/19.
   */
-class CommandLineKeyValueStore(keyValueStoreService: KeyValueStoreService[Future, Array[Byte]]) {
+class CommandLineKeyValueStore(keyValueStoreService: KeyValueInterface[Future, Array[Byte]]) {
 
   def start(): Unit = {
 
