@@ -4,5 +4,9 @@ version := "1.0"
 
 scalaVersion := "2.12.1"
 
-libraryDependencies += "com.twitter" %% "finagle-http" % "19.3.0"
 libraryDependencies += "com.twitter" %% "finagle-mysql" % "19.3.0"
+libraryDependencies ++= Seq(
+  "org.apache.thrift" % "libthrift" % "0.10.0",
+  "com.twitter" %% "scrooge-core" % "19.3.0" exclude("com.twitter", "libthrift"),
+  "com.twitter" %% "finagle-thrift" % "19.3.0" exclude("com.twitter", "libthrift")
+)
