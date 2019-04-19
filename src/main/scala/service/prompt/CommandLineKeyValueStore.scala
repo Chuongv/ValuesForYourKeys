@@ -1,5 +1,9 @@
 package service.prompt
 
+import java.nio.ByteBuffer
+import java.nio.charset.Charset
+
+import com.twitter.finagle.mysql.param.Charset
 import com.twitter.util.{Await, Future}
 import service.KeyValueInterface
 
@@ -8,7 +12,7 @@ import scala.annotation.tailrec
 /**
   * Created by cvu on 4/10/19.
   */
-class CommandLineKeyValueStore(keyValueStoreService: KeyValueInterface[Future, Array[Byte]]) {
+class CommandLineKeyValueStore(keyValueStoreService: KeyValueInterface[Future, ByteBuffer]) {
 
   def start(): Unit = {
 
@@ -56,7 +60,7 @@ class CommandLineKeyValueStore(keyValueStoreService: KeyValueInterface[Future, A
     } else {
       val value = keyValueStoreService.get(key)
       value map {
-        case Some(v) => println("Value is " + new String(v))
+        case Some(v) => println("Value is " + new String(v.array()))
         case None    => println("Got a miss on the key value store!")
       }
 
@@ -69,7 +73,7 @@ class CommandLineKeyValueStore(keyValueStoreService: KeyValueInterface[Future, A
     val response = scala.io.StdIn.readLine().split('=').map(_.trim).filterNot(_.isEmpty)
 
     if (response.length == 2) {
-      Await.result(keyValueStoreService.set(response.head, response(1).getBytes))
+      Await.result(keyValueStoreService.set(response.head, ByteBuffer.wrap(response(1).getBytes())))
     } else {
       println("Invalid response, please try again!")
     }

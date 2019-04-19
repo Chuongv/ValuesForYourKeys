@@ -1,5 +1,7 @@
 package data
 
+import java.nio.ByteBuffer
+
 import com.twitter.finagle.Mysql
 import com.twitter.finagle.mysql.Parameter._
 import com.twitter.finagle.mysql.{Client, _}
@@ -9,7 +11,7 @@ import service.KeyValueInterface
 /**
   * Created by cvu on 4/11/19.
   */
-class MySqlDataStore extends KeyValueInterface[Future,Array[Byte]] {
+class MySqlDataStore extends KeyValueInterface[Future,ByteBuffer] {
 
   private val client: Client with Transactions = Mysql.client
     .withCredentials("root","root")
@@ -22,14 +24,15 @@ class MySqlDataStore extends KeyValueInterface[Future,Array[Byte]] {
   private val setQuery = "INSERT INTO datastore VALUES(?, ?) ON DUPLICATE KEY UPDATE data= ?"
 
 
-  override def get(key: String): Future[Option[Array[Byte]]] = {
+  override def get(key: String): Future[Option[ByteBuffer]] = {
 
-    val results = client.prepare(selectQuery).select[Option[Array[Byte]]](key) { row =>
-      row.getBytes("data")
+    val results = client.prepare(selectQuery).select[Option[ByteBuffer]](key) { row =>
+      row.getBytes("data").map(ByteBuffer.wrap)
     }
 
     results.map(_.flatten.headOption)
   }
 
-  override def set(key: String, value: Array[Byte]): Future[Unit] = client.prepare(setQuery).apply(key, value, value) map { _ => ()}
+  override def set(key: String, value: ByteBuffer): Future[Unit] =
+    client.prepare(setQuery).apply(key, value.array(), value.array()) map { _ => ()}
 }
