@@ -9,7 +9,7 @@ import service.KeyValueInterface
 /**
   * Created by cvu on 4/11/19.
   */
-class MySqlDataStore extends KeyValueInterface[Future,String] {
+class MySqlDataStore(tableName: String) extends KeyValueInterface[Future,String] {
 
   private val client: Client with Transactions = Mysql.client
     .withCredentials("root","root")
@@ -17,7 +17,7 @@ class MySqlDataStore extends KeyValueInterface[Future,String] {
     .newRichClient(":3306")
 
 
-  private val selectQuery = "SELECT data FROM datastore WHERE data_key = ?"
+  private val selectQuery = s"SELECT data FROM $tableName WHERE data_key = ?"
 
   private val setQuery = "INSERT INTO datastore VALUES(?, ?) ON DUPLICATE KEY UPDATE data= ?"
 
